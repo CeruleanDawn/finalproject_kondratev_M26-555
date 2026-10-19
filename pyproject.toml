@@ -1,0 +1,68 @@
+[project]
+name = "finalproject-kondratev-m26-555"
+version = "0.1.0"
+description = "ValutaTrade Hub: console currency wallet and rates parser service"
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [
+    { name = "Kondratev" }
+]
+dependencies = [
+    "prettytable>=3.12",
+    "requests>=2.31",
+]
+
+[project.scripts]
+valutatrade-hub = "valutatrade_hub.cli.interface:main"
+valutatrade-update-rates = "valutatrade_hub.parser_service.scheduler:main"
+
+[dependency-groups]
+dev = [
+    "ruff>=0.9",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/valutatrade_hub"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "src/valutatrade_hub",
+    "tests",
+    "data",
+    "README.md",
+    "WINDOWS_START.md",
+    "main.py",
+    "pyproject.toml",
+    ".python-version",
+    ".gitignore",
+    "Makefile",
+    ".env.example",
+]
+
+[tool.valutatrade]
+data_dir = "data"
+users_file = "data/users.json"
+portfolios_file = "data/portfolios.json"
+rates_file = "data/rates.json"
+history_file = "data/exchange_rates.json"
+rates_ttl_seconds = 300
+base_currency = "USD"
+request_timeout = 10
+log_dir = "logs"
+log_level = "INFO"
+log_max_bytes = 1048576
+log_backup_count = 3
+parser_refresh_seconds = 300
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+exclude = [".venv", "dist", "build", "__pycache__"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+ignore = []
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
